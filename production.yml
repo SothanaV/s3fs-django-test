@@ -1,0 +1,41 @@
+version: '3.3'
+networks:
+    proxy:
+        external: true
+    internal:
+        external: false
+
+services: 
+    db:
+        image: postgres:11.3-alpine
+        env_file:
+            - .env
+        volumes:
+            - ~/var/www/${PROJECT_NAME}/postgresql:/var/lib/postgresql
+        networks: 
+            - internal
+        labels:
+            - traefik.enable=false
+
+    backend:
+        container_name : ${PROJECT_NAME}_backend
+        build: ./backend
+        command: sh run_production.sh
+        volumes: 
+            - ./backend:/backend
+            - ~/var/www/${PROJECT_NAME}/static/:/var/www/${PROJECT_NAME}/static/
+            - ~/var/www/${PROJECT_NAME}/media/:/var/www/${PROJECT_NAME}/media/
+        # ports: 
+        #     - 8000:8000
+        env_file: 
+            - .env
+        networks: 
+            - internal
+            - proxy
+        labels: 
+            - "traefik.frontend.entryPoints=http,https"
+            - "traefik.frontend.redirect.entryPoint=https"
+            - "traefik.frontend.rule=Host:${PROJECT_NAME}.dfellow.com;PathPrefix:/"
+            - traefik.backend=${PROJECT_NAME}_backend
+            - traefik.port=8000
+            - traefik.docker.network=proxy
