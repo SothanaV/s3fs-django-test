@@ -130,5 +130,5 @@ STATIC_URL = '/static/'
 
 CORS_ORIGIN_ALLOW_ALL = True
 
-STATIC_ROOT = '/var/www/{PROJECT_NAME}/static/'.format(PROJECT_NAME=os.environ.get(PROJECT_NAME))
-MEDIA_ROOT = '/var/www/{PROJECT_NAME}/media/'.format(PROJECT_NAME=os.environ.get(PROJECT_NAME))
+STATIC_ROOT = '/var/www/{PROJECT_NAME}/static/'.format(PROJECT_NAME=os.environ.get('PROJECT_NAME'))
+MEDIA_ROOT = '/var/www/{PROJECT_NAME}/media/'.format(PROJECT_NAME=os.environ.get('PROJECT_NAME'))
