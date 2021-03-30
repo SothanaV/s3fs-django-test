@@ -12,3 +12,5 @@ env/
 # mac
 .DS_Store
 .vscode/
+media/
+files/
